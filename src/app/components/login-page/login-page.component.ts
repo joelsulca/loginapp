@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
+import {FlashMessagesService} from "angular2-flash-messages";
 
 
 @Component({
@@ -13,7 +14,8 @@ public email: string;
 public password: string;
   constructor(
     public authService: AuthService,
-    public router: Router
+    public router: Router,
+    public flashMessages: FlashMessagesService
   ) { }
 
   ngOnInit() {
@@ -21,10 +23,13 @@ public password: string;
   onSubmitLogin() {
     this.authService.loginEmail(this.email, this.password)
       .then( (res) => {
+        this.flashMessages.show('Usuario creado correctamente.',
+          {cssClass: 'alert-success', timeout: 4000});
         this.router.navigate(['/private']);
       }).catch((err) => {
-      console.log(err);
-      this.router.navigate(['/register']);
+      this.flashMessages.show(err.message,
+        {cssClass: 'alert-danger', timeout: 4000});
+      this.router.navigate(['/login']);
     });
   }
 }
