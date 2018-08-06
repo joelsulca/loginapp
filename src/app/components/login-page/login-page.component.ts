@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {FlashMessagesService} from "angular2-flash-messages";
@@ -12,6 +12,7 @@ import {FlashMessagesService} from "angular2-flash-messages";
 export class LoginPageComponent implements OnInit {
 public email: string;
 public password: string;
+@ViewChild("focusPassword") focusPassword: ElementRef;
   constructor(
     public authService: AuthService,
     public router: Router,
@@ -29,7 +30,8 @@ public password: string;
       }).catch((err) => {
       this.flashMessages.show(err.message,
         {cssClass: 'alert-danger', timeout: 4000});
-      this.router.navigate(['/login']);
+      // this.router.navigate(['/login']);
+      this.focusPassword.nativeElement.focus();
     });
   }
 }
