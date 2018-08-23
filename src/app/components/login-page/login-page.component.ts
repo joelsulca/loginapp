@@ -10,20 +10,23 @@ import {FlashMessagesService} from "angular2-flash-messages";
   styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent implements OnInit {
-public email: string;
-public password: string;
-@ViewChild("focusPassword") focusPassword: ElementRef;
+  public email: string;
+  public password: string;
+  @ViewChild("focusPassword") focusPassword: ElementRef;
+
   constructor(
     public authService: AuthService,
     public router: Router,
     public flashMessages: FlashMessagesService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
+
   onSubmitLogin() {
     this.authService.loginEmail(this.email, this.password)
-      .then( (res) => {
+      .then((res) => {
         this.flashMessages.show('Usuario creado correctamente.',
           {cssClass: 'alert-success', timeout: 4000});
         this.router.navigate(['/private']);
@@ -32,6 +35,16 @@ public password: string;
         {cssClass: 'alert-danger', timeout: 4000});
       // this.router.navigate(['/login']);
       this.focusPassword.nativeElement.focus();
+    });
+  }
+
+  onLoginGoogle() {
+    this.authService.loginGoogle()
+      .then((res) => {
+        this.router.navigate(['/private']);
+      }).catch((err) => {
+      this.flashMessages.show(err.message,
+        {cssClass: 'alert-danger', timeout: 4000});
     });
   }
 }
