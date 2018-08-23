@@ -38,6 +38,16 @@ export class LoginPageComponent implements OnInit {
     });
   }
 
+  onLoginFacebook() {
+    this.authService.loginFacebook()
+      .then((res) => {
+        this.router.navigate(['/private']);
+      }).catch((err) => {
+      this.flashMessages.show(err.message,
+        {cssClass: 'alert-danger', timeout: 4000})
+    });
+  }
+
   onLoginGoogle() {
     this.authService.loginGoogle()
       .then((res) => {
